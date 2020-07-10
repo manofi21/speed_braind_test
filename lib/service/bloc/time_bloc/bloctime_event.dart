@@ -13,6 +13,8 @@ class TimeStart extends BloctimeEvent{
 }
 
 class TimeUp extends BloctimeEvent{
+  final int getScore;
+  TimeUp(this.getScore);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [getScore];
 }

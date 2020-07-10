@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
-import 'package:speed_brain_test/bloc/score_bloc/bloc.dart';
+import 'bloc.dart';
 
 class BlocprojectBloc extends Bloc<BlocprojectEvent, BlocprojectState> {
   static int i = cheecks();

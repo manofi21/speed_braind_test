@@ -1,24 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/score_bloc/bloc.dart';
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Fake Weather App"),
-        ),
-        body:
-            // BlocProvider(
-            //     create: (context) => BlocprojectBloc(), child:GritTest())
-            BlocProvider(
-                create: (context) => BlocprojectBloc(),
-                child: WidgetCounter()));
-  }
-}
+import 'service/bloc/score_bloc/bloc.dart';
+import 'service/bloc/time_bloc/bloc.dart';
 
 class WidgetCounter extends StatelessWidget {
+  final int counterTime;
+  const WidgetCounter(this.counterTime);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BlocprojectBloc, BlocprojectState>(
@@ -30,6 +17,7 @@ class WidgetCounter extends StatelessWidget {
             count2: state.counter2,
             result: state.result,
             score: state.score,
+            time: counterTime
           );
         }
       },
@@ -38,17 +26,20 @@ class WidgetCounter extends StatelessWidget {
 }
 
 class GritTest extends StatelessWidget {
-  final int count1, count2, result, score;
+  final int count1, count2, result, score, time;
   const GritTest({
     Key key,
     this.count1,
     this.count2,
     this.result, 
     this.score,
+    this.time,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final weatherBloc = BlocProvider.of<BlocprojectBloc>(context);
+    final playPageBloc = BlocProvider.of<BlocprojectBloc>(context);
+    final timeBloc = BlocProvider.of<BloctimeBloc>(context);
+    if(time == 0) timeBloc.add(TimeUp(score));
     return Column(
       children: [
         Row(
@@ -67,7 +58,7 @@ class GritTest extends StatelessWidget {
               style: Theme.of(context).textTheme.headline5,
             )),
             SizedBox(width: 60),
-            Text("")
+            Text("$time")
           ],
         ),
         GridView.count(
@@ -80,8 +71,8 @@ class GritTest extends StatelessWidget {
               child: InkWell(
                 // onTap: () => print('${}'),
                 onTap: () {
-                  if (result == index + 1) weatherBloc.add(Add());
-                  weatherBloc.add(Subtract());
+                  if (result == index + 1) playPageBloc.add(Add());
+                  playPageBloc.add(Subtract());
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -99,8 +90,8 @@ class GritTest extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            if (result == 0) weatherBloc.add(Add());
-            weatherBloc.add(Subtract());
+            if (result == 0) playPageBloc.add(Add());
+            playPageBloc.add(Subtract());
           },
           child: Container(
               decoration: BoxDecoration(
